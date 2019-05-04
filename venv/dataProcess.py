@@ -1,9 +1,11 @@
 '''
 param
+mean 英语翻译
 correctRate 正确率
 correctNum 正确次数
 occurrenceNum 出现次数
 passStat 太简单标志位
+correctSign 本次正确标志位
 importTime 入库时间
 '''
 # -*- coding: utf-8 -*-
@@ -25,7 +27,7 @@ def creattestjson():
 
 
 def addWord(word, translation, UserLib):
-    myLib = open(UserLib + ".json", "r")
+    myLib = open("UserData\\" +UserLib + ".json", "r")
     myDict = json.load(myLib)
     myLib.close()
 
@@ -35,16 +37,17 @@ def addWord(word, translation, UserLib):
         myDict[word].append(0.0)
         myDict[word].append(0)
         myDict[word].append(0)
-        myDict[word].append(True)
+        myDict[word].append(False)
+        myDict[word].append(False)
         myDict[word].append(time.strftime('%Y.%m.%d.%H.%M.%S', time.localtime(time.time())))
-    myLib = open(UserLib + ".json", "w")
+    myLib = open("UserData\\" +UserLib + ".json", "w")
     json.dump(myDict, myLib)
     myLib.close()
 
 
 def addLib(UserLib, libName):
-    myLib = open(UserLib + ".json", "r")
-    lib = open("VocabularyLib//" + libName + ".json", "r")
+    myLib = open("UserData\\" +UserLib + ".json", "r")
+    lib = open("VocabularyLib\\" + libName, "r")
     myDict = json.load(myLib)
     libDict = json.load(lib)
     lib.close()
@@ -56,15 +59,16 @@ def addLib(UserLib, libName):
             myDict[i].append(0.0)
             myDict[i].append(0)
             myDict[i].append(0)
-            myDict[i].append(True)
+            myDict[i].append(False)
+            myDict[i].append(False)
             myDict[i].append(time.strftime('%Y.%m.%d.%H.%M.%S', time.localtime(time.time())))
-    myLib = open(UserLib + ".json", "w")
+    myLib = open("UserData\\" +UserLib + ".json", "w")
     json.dump(myDict, myLib)
     myLib.close()
 
 
 def viewLib(libName):
-    lib = open("VocabularyLib//" + libName + ".json", "r")
+    lib = open("VocabularyLib\\" + libName + ".json", "r")
     libDict = json.load(lib)
     for i in libDict.keys():
         print(i + "  " + str(libDict[i]))
@@ -72,7 +76,7 @@ def viewLib(libName):
 
 
 def viewMyLib(UserLib):
-    lib = open(UserLib + ".json", "r")
+    lib = open("UserData\\" + UserLib + ".json", "r")
     myDict = json.load(lib)
     for i in myDict.keys():
         print(i + "  " + str(myDict[i]))
@@ -80,5 +84,5 @@ def viewMyLib(UserLib):
 
 
 if __name__ == "__main__":
-    # addLib("myLib","test")
-    addWord("application", "应用", "myLib")
+    addLib("myLib", "test")
+    # addWord("application", "应用", "myLib")
