@@ -34,21 +34,26 @@ i = 0
 j = 0
 yisi = ''
 
-outpath=""
+outpath = ""
+
+
 def pach(name):
     global outpath
     outpath = (name + ".txt")
     open(outpath, "w")
+
+
 def write(key):
     with open(outpath, "w") as f:
         f.writelines(key)
 
+
 def key(inpath):
     global outpath
-    biaozhi=os.path.exists(outpath)
-    if(biaozhi==True):
-         keys = list(inpath.keys())
-         write(keys)
+    biaozhi = os.path.exists(outpath)
+    if (biaozhi == True):
+        keys = list(inpath.keys())
+        write(keys)
     jieguo = random.sample(keys, 4)
     daan = []
     daan = []

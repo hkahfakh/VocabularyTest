@@ -7,7 +7,7 @@ import 英语翻译 as msy
 UserName = "default"
 Path = ""
 MYDict = {}
-
+TestOverSt = False
 
 def welcome():
     str = '''*                                                                           *
@@ -56,10 +56,12 @@ def init():
 
 
 def option():
-    print("-" * 77)
+    welcome()
     print("1.进入单词量检测")
     print("2.添加单词")
-    print("3.查看我的库")
+    print("3.添加文章")
+    print("4.查看我的库")
+    print("5.退出")
     print("-" * 77)
     return int(input("输入你要进行的操作"))
 
@@ -69,14 +71,17 @@ def create_question(element):
     print(element[4])
     print("-" * 77)
     for i in element[0:4]:
-        print(i)
+        print(str(element.index(i) + 1) + ".", i)
     print("-" * 77)
-    return element[4], element[5]
+    return element[4], element[5] + 1
 
 
 def correctJudgment():
     while True:
         question_param = msy.repley(MYDict)
+        if question_param == None:
+            TestOverSt = True
+            break
         correct = create_question(question_param)
         MYDict[correct[0]][3] = MYDict[correct[0]][3] + 1
         if input("请输入正确答案") == str(correct[1]):
@@ -88,7 +93,7 @@ def correctJudgment():
         MYDict[correct[0]][5] = True
 
         s = input("回车继续")
-        if s == "exit":
+        if s == "exit" :
             break
         elif s == "s":
             MYDict[correct[0]][4] = True
@@ -108,16 +113,23 @@ if __name__ == '__main__':
     while True:
         choice = option()
         if choice == 1:
+            os.system("cls")
             correctJudgment()
             exit_Process()
             os.system("cls")
+            if TestOverSt:
+                dp.correctRate(UserName)
         elif choice == 2:
             word = input("输入单词")
             translation = input("输入单词释义")
             dp.addWord(word, translation, UserName)
             os.system("cls")
         elif choice == 3:
+            dp.importP(UserName)
+        elif choice == 4:
             dp.viewMyLib(UserName)
+        elif choice == 5:
+            break
         else:
             print("无效选择请重新输入")
             os.system("cls")

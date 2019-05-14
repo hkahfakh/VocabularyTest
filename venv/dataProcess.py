@@ -12,6 +12,7 @@ importTime 入库时间
 import json
 import time
 import os
+import importPiece
 
 
 def creattestjson():
@@ -27,7 +28,7 @@ def creattestjson():
 
 
 def addWord(word, translation, UserLib):
-    myLib = open("UserData\\" +UserLib + ".json", "r")
+    myLib = open("UserData\\" + UserLib + ".json", "r")
     myDict = json.load(myLib)
     myLib.close()
 
@@ -40,13 +41,32 @@ def addWord(word, translation, UserLib):
         myDict[word].append(False)
         myDict[word].append(False)
         myDict[word].append(time.strftime('%Y.%m.%d.%H.%M.%S', time.localtime(time.time())))
-    myLib = open("UserData\\" +UserLib + ".json", "w")
+    myLib = open("UserData\\" + UserLib + ".json", "w")
+    json.dump(myDict, myLib)
+    myLib.close()
+
+
+def addDict(UserLib, libDict):
+    myLib = open("UserData\\" + UserLib + ".json", "r")
+    myDict = json.load(myLib)
+    myLib.close()
+
+    for i in libDict.keys():
+        if i not in myDict:
+            myDict[i] = libDict[i]
+            myDict[i].append(0.0)
+            myDict[i].append(0)
+            myDict[i].append(0)
+            myDict[i].append(False)
+            myDict[i].append(False)
+            myDict[i].append(time.strftime('%Y.%m.%d.%H.%M.%S', time.localtime(time.time())))
+    myLib = open("UserData\\" + UserLib + ".json", "w")
     json.dump(myDict, myLib)
     myLib.close()
 
 
 def addLib(UserLib, libName):
-    myLib = open("UserData\\" +UserLib + ".json", "r")
+    myLib = open("UserData\\" + UserLib + ".json", "r")
     lib = open("VocabularyLib\\" + libName, "r")
     myDict = json.load(myLib)
     libDict = json.load(lib)
@@ -62,9 +82,15 @@ def addLib(UserLib, libName):
             myDict[i].append(False)
             myDict[i].append(False)
             myDict[i].append(time.strftime('%Y.%m.%d.%H.%M.%S', time.localtime(time.time())))
-    myLib = open("UserData\\" +UserLib + ".json", "w")
+    myLib = open("UserData\\" + UserLib + ".json", "w")
     json.dump(myDict, myLib)
     myLib.close()
+
+
+def importP(UserLib):
+    path = input("请输入路径+文件")
+    if os.path.exists(path):
+        addDict(UserLib, importPiece.pieceProcess(path))
 
 
 def viewLib(libName):
@@ -83,6 +109,26 @@ def viewMyLib(UserLib):
     lib.close()
 
 
+def correctRate(UserLib):
+    total = 1
+    Correctnumber = 0
+
+    lib = open("UserData\\" + UserLib + ".json", "r")
+    myDict = json.load(lib)
+    content = myDict.items()
+    total = len(content)
+    # total = content.len()
+    for i in content:
+        print(i[1][-2])
+        if i[1][-2]==True:
+            Correctnumber = Correctnumber + 1
+    print("正确单词数："+str(Correctnumber))
+    print("总单词数：" + str(total))
+    print("正确率:" + str(Correctnumber / total))
+    lib.close()
+
+
 if __name__ == "__main__":
-    addLib("myLib", "test")
+    # addLib("myLib", "test")
+    correctRate("zhai")
     # addWord("application", "应用", "myLib")
